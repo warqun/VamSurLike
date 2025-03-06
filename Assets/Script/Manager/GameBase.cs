@@ -9,6 +9,7 @@ public class GameBase : MonoBehaviour
     public Player player = null;
     DamageManager damageManager = null;
     ObjectManager objectManager = null;
+    MapManager mapManager = null;
     private void Awake()
     {
         if(gameBase == null)
@@ -45,6 +46,8 @@ public class GameBase : MonoBehaviour
         if (objectManager == null)
             objectManager = ObjectManager.instance;
 
+        if (mapManager == null)
+            mapManager = MapManager.instance;
         StartCoroutine(GameProcess());
     }
     List<Player> FindComponentsInChildren(Transform parent)
@@ -73,6 +76,9 @@ public class GameBase : MonoBehaviour
 
                 if (objectManager != null)
                     objectManager.FrameUpdate();
+
+                if (mapManager != null)
+                    mapManager.FrameUpdate();
             }
             catch (System.Exception e)
             {
