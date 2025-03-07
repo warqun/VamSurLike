@@ -26,31 +26,30 @@ public class DamageManager : ManagerBase
         damageEventList.Clear();
         foreach (ObjectDamage damageEvent in frameList)
         {
-            float reqDamage = damageEvent.reqObj.DamageReqEvnet();
-            damageEvent.resObj.DamageResEvnet(reqDamage);
+            float reqDamage = damageEvent.reqObj();
+            damageEvent.resObj(reqDamage);
             foreach(ObjectDamage.EventCallBack callBack in damageEvent.eventCallBackList)
             {
                 callBack();
             }
             Debug.LogFormat("[Manager][Damage] State EventCount:{0}", damageEvent.eventCallBackList.Count);
-            Debug.LogFormat("[Manager][Damage] State req TYPE:{0}, Damage:{1}", damageEvent.reqObj.type, reqDamage);
-            Debug.LogFormat("[Manager][Damage] State req TYPE:{0}, HP:{1}", damageEvent.resObj.type, damageEvent.resObj.HealPoint);
         }
 
     }
-
 }
 public class ObjectDamage
 {
     // 데미지를 주는 대상
-    public AliveObject reqObj;
+    public ReqEventCallBack reqObj;
+    public delegate float ReqEventCallBack();
     // 데미지를 받는 대상
-    public AliveObject resObj;
+    public delegate void ResEventCallBack(float damage);
+    public ResEventCallBack resObj;
     // 데미지 받을때 일어나느 이벤트 등록
     public delegate void EventCallBack();
     public List<EventCallBack> eventCallBackList = new List<EventCallBack>();
     // 생성자
-    public ObjectDamage(AliveObject reqObj, AliveObject resObj)
+    public ObjectDamage(ReqEventCallBack reqObj, ResEventCallBack resObj)
     {
         this.reqObj = reqObj;
         this.resObj = resObj; 

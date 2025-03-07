@@ -71,14 +71,17 @@ public class GameBase : MonoBehaviour
         {
             try
             {
-                if(damageManager != null)
-                    damageManager.FrameUpdate();
+                // 맵과 관련된 파트는 이 아래로 내려간다.
+                if (mapManager != null)
+                    mapManager.FrameUpdate();
 
                 if (objectManager != null)
                     objectManager.FrameUpdate();
 
-                if (mapManager != null)
-                    mapManager.FrameUpdate();
+                // 몹과 관련된 파트는 이 아래로 내려간다.
+                if(damageManager != null)
+                    damageManager.FrameUpdate();
+
             }
             catch (System.Exception e)
             {

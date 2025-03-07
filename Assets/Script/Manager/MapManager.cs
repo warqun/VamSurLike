@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
+/// TODO
+/// tilePrefab의 개수 증가, 무작위 생성 또는 특정 맵의 무한 반복 기능 추가.
+/// => 타일 맵 제작.
 /// <summary>
 /// 하나의 큰 맵이 있을때 해당 맵에서 있는 위치에 따라 타일 배치.
 /// </summary>
