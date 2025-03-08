@@ -34,7 +34,6 @@ public class DamageManager : ManagerBase
             }
             Debug.LogFormat("[Manager][Damage] State EventCount:{0}", damageEvent.eventCallBackList.Count);
         }
-
     }
 }
 public class ObjectDamage

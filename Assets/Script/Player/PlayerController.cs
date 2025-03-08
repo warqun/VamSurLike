@@ -14,7 +14,7 @@ public class PlayerController : MonoBehaviour
         state = null;
         state = GetComponent<AliveObject>();
         if(state != null)
-            speed = state.SpeedPoint;
+            speed = state.GetStatusValue(ObjectDataType.AliveObjectStatus.Speed);
 
         rb = GetComponent<Rigidbody>();
     }
@@ -31,7 +31,8 @@ public class PlayerController : MonoBehaviour
     private void FixedUpdate()
     {
         // MoveController
+        float speedBuff = state.GetBuffValue(ObjectDataType.AliveObjectStatus.Speed);
         Vector3 moveVec = new Vector3(playerMoveVerctorX, 0, playerMoveVerctorY);
-        transform.Translate(moveVec.normalized * speed * Time.fixedDeltaTime);
+        transform.Translate(moveVec.normalized * (speed * speedBuff) * Time.fixedDeltaTime);
     }
 }

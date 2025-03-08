@@ -10,6 +10,8 @@ public class GameBase : MonoBehaviour
     DamageManager damageManager = null;
     ObjectManager objectManager = null;
     MapManager mapManager = null;
+    MobManager mobManager = null;
+
     private void Awake()
     {
         if(gameBase == null)
@@ -48,6 +50,10 @@ public class GameBase : MonoBehaviour
 
         if (mapManager == null)
             mapManager = MapManager.instance;
+
+        if (mobManager == null)
+            mobManager = MobManager.instance;
+
         StartCoroutine(GameProcess());
     }
     List<Player> FindComponentsInChildren(Transform parent)
@@ -71,6 +77,10 @@ public class GameBase : MonoBehaviour
         {
             try
             {
+                // 몹 이동 
+                if (mobManager != null)
+                    mobManager.FrameUpdate();
+
                 // 맵과 관련된 파트는 이 아래로 내려간다.
                 if (mapManager != null)
                     mapManager.FrameUpdate();
@@ -95,6 +105,11 @@ public class GameBase : MonoBehaviour
     public void AddDamageEvent(ObjectDamage objectDamage)
     {
         if(damageManager != null)
-            damageManager.damageEventList.Add(objectDamage);    
+            damageManager.damageEventList.Add(objectDamage);
+    }
+    public void AddMobEvent(ObjectDamage objectDamage)
+    {
+        if (damageManager != null)
+            damageManager.damageEventList.Add(objectDamage);
     }
 }

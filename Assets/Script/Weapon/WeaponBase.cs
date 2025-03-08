@@ -35,13 +35,17 @@ public class WeaponBase : MonoBehaviour
     {
         this.master = master; 
     }
+    public virtual float GetWeaponDamage()
+    {
+        return wpDamage;
+    }
     /// 오로지 데미지 계산하는 영역으로 두고 있어야함.
     /// 사용자의 체력이 다 떨어지는 경우 계산되지 않게 막혀야함.
     /// DamageManager 계산에 포함되는 코드 
     public virtual float DamageReqEvnet()
     {
         if (master != null)
-            Debug.LogFormat("[Weapon][Damage][REQ] Player: {0} - Damage:{1}", master.type, wpDamage);
+            Debug.LogFormat("[Weapon][Damage][REQ] Player: {0} - Damage:{1}", master.type, GetWeaponDamage());
         return wpDamage;
     }
     /// DamageManager 계산에서 일어나야하는 일.
