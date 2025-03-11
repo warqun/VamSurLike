@@ -50,6 +50,15 @@ public static class ObjectDataType
         UnLimit,// 제한 없음 영구적용.
         MAX
     }
+    public enum TraceType
+    {
+        None = 0,
+        Near,
+        Far,
+        Strong,
+        Week,
+        Max
+    }
 }
 
 [System.Serializable]

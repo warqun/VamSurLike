@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class PlayerCharter : MonoBehaviour
+public class PlayerCharacter : MonoBehaviour
 {
     public Camera mainCamera; // 주 카메라
     public float rotationSpeed = 5f; // 회전 속도

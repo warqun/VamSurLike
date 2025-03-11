@@ -742,6 +742,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 0
+  isAlive: 1
 --- !u!1 &884625775
 GameObject:
   m_ObjectHideFlags: 0
@@ -1110,6 +1111,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 0
+  isAlive: 1
   rigidbody: {fileID: 0}
 --- !u!54 &1979606791
 Rigidbody:
