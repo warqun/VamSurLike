@@ -4,7 +4,7 @@ using UnityEngine;
 public class MobManager: ManagerBase
 {
     public static MobManager instance;
-    List<MobRoot> mobList = new List<MobRoot>();
+    public List<MobRoot> mobList = new List<MobRoot>();
     private void Awake()
     {
         if(instance == null)
