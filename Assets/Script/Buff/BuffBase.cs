@@ -67,6 +67,10 @@ public class BuffBase : MonoBehaviour
             }
         }
     }
+    // TODO
+    // 게임 베이스 시간에 연결되어있어야함.
+    // 타이머 매니저 제작 필요
+
     protected virtual void FixedUpdate()
     {
         if(buffType == ObjectDataType.BuffType.Time)
