@@ -15,7 +15,6 @@ public class PlayerCharacter : MonoBehaviour
         {
             Vector3 targetPos = hit.point;
             targetPos.y = transform.position.y; // 캐릭터가 기울어지지 않도록 Y축 고정
-
             Quaternion targetRotation = Quaternion.LookRotation(targetPos - transform.position);
             transform.LookAt(targetPos);
         }

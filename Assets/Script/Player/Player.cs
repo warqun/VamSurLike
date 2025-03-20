@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class Player : AliveObject
 {
+    [HideInInspector]
     public Rigidbody rigidbody = null;
     private void Awake()
     {
