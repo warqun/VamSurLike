@@ -107,9 +107,11 @@ public class GameBase : MonoBehaviour
         if(damageManager != null)
             damageManager.damageEventList.Add(objectDamage);
     }
-    public void AddMobEvent(ObjectDamage objectDamage)
+    public void AddMobEvent(MobRoot mob)
     {
-        if (damageManager != null)
-            damageManager.damageEventList.Add(objectDamage);
+        if (mobManager != null)
+            mobManager.mobList.Add(mob);
     }
+
+    public List<MobRoot> GetMobList { get { return mobManager.mobList;  } }
 }
