@@ -11,7 +11,6 @@ public class ObjectManager: ManagerBase
     public static ObjectManager instance;
     public List<GameObject> createList = new List<GameObject>();
     public List<GameObject> destoryList = new List<GameObject>();
-
     private void Awake()
     {
         if(instance == null) instance = this;
