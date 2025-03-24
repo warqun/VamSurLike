@@ -5,10 +5,12 @@ using static UnityEngine.Rendering.DebugUI;
 
 public class AliveObject : MonoBehaviour
 {
+    // ìŠ¤í‚¬ ì‹œìŠ¤í…œì— ì˜í•´ì„œ ì¶”ê°€ëœ í˜„ì¬ ë°”ë¡œë³´ê³  ìˆëŠ” ë°©í–¥.
+    public Vector3 forward;
     public ObjectDataType.AliveObjectType type = ObjectDataType.AliveObjectType.None;
     public bool isAlive = true;
 
-    // ObjectDataType.AliveObjectStatus ±â¹İÀ¸·Î ±¸¼ºµÈ ½ºÅ×ÀÌÅÍ½º ¹è¿­
+    // ObjectDataType.AliveObjectStatus ê¸°ë°˜ìœ¼ë¡œ êµ¬ì„±ëœ ìŠ¤í…Œì´í„°ìŠ¤ ë°°ì—´
     float[] statusValue = new float[(int)ObjectDataType.AliveObjectStatus.MAX];
     public float GetStatusValue(ObjectDataType.AliveObjectStatus statusType)
     {
@@ -23,12 +25,12 @@ public class AliveObject : MonoBehaviour
     protected bool allowDamage = true;
     public bool AllowDamage { get { return allowDamage; } set { allowDamage = value; } }
     /// <summary>
-    /// ¿©·¯ ¹«±â¿¡ ´ëÇÑ ÆÇÁ¤ Á¤¸®.
+    /// ì—¬ëŸ¬ ë¬´ê¸°ì— ëŒ€í•œ íŒì • ì •ë¦¬.
     /// </summary>
     protected Dictionary<WeaponBase, float> weaponCycle = new Dictionary<WeaponBase, float>();
 
     /// <summary>
-    /// ÇöÀç AliveObject°¡ µé°í ÀÖ´Â ¹öÇÁµé
+    /// í˜„ì¬ AliveObjectê°€ ë“¤ê³  ìˆëŠ” ë²„í”„ë“¤
     /// </summary>
     protected List<BuffBase> buffList = new List<BuffBase>();
 
@@ -43,7 +45,7 @@ public class AliveObject : MonoBehaviour
             GetStatusValue(ObjectDataType.AliveObjectStatus.DP), 
             GetStatusValue(ObjectDataType.AliveObjectStatus.HPRegen), 
             type);
-        // ¸ğµç ÀÚ½Ä ¿ÀºêÁ§Æ®¿¡¼­ WeaponBase Ã£±â
+        // ëª¨ë“  ìì‹ ì˜¤ë¸Œì íŠ¸ì—ì„œ WeaponBase ì°¾ê¸°
         WeaponBase[] weapons = GetComponentsInChildren<WeaponBase>();
 
         if (weapons.Length > 0)
@@ -55,31 +57,31 @@ public class AliveObject : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("[Alive][Weapon][Find] WeaponBase¸¦ °¡Áø ÀÚ½Ä ¿ÀºêÁ§Æ®¸¦ Ã£À» ¼ö ¾ø½À´Ï´Ù.");
+            Debug.LogWarning("[Alive][Weapon][Find] WeaponBaseë¥¼ ê°€ì§„ ìì‹ ì˜¤ë¸Œì íŠ¸ë¥¼ ì°¾ì„ ìˆ˜ ì—†ìŠµë‹ˆë‹¤.");
         }
     }
 
-    // ÁÖ´Â µ¥¹ÌÁö °è»ê.
+    // ì£¼ëŠ” ë°ë¯¸ì§€ ê³„ì‚°.
     public virtual float DamageReqEvnet()
     {
         float attackPoint = 0;
         attackPoint = GetStatusValue(ObjectDataType.AliveObjectStatus.BasicDamage);
         Debug.LogFormat("[Alive][Damage][REQ] {0} - Damage:{1}",gameObject.name, GetStatusValue(ObjectDataType.AliveObjectStatus.BasicDamage));
         /// TODO
-        /// ¾ÆÀÌÅÛ °­È­ È¿°ú ¶Ç´Â ¾àÈ­ È¿°ú Ãß°¡
-        /// ½ºÅ×ÀÌÁö ¹öÇÁ¿¡ ÀÇÇÑ È¿°ú 
+        /// ì•„ì´í…œ ê°•í™” íš¨ê³¼ ë˜ëŠ” ì•½í™” íš¨ê³¼ ì¶”ê°€
+        /// ìŠ¤í…Œì´ì§€ ë²„í”„ì— ì˜í•œ íš¨ê³¼ 
         
         return attackPoint;
     }
-    // µ¥¹ÌÁö¸¦ ¹ŞÀ» ¶§ °è»ê.
+    // ë°ë¯¸ì§€ë¥¼ ë°›ì„ ë•Œ ê³„ì‚°.
     public virtual void DamageResEvnet(float damage)
     {
-        /// ¾ÆÀÌÅÛ °­È­ È¿°ú ¶Ç´Â ¾àÈ­ È¿°ú Ãß°¡
-        /// ½ºÅ×ÀÌÁö ¹öÇÁ¿¡ ÀÇÇÑ È¿°ú 
+        /// ì•„ì´í…œ ê°•í™” íš¨ê³¼ ë˜ëŠ” ì•½í™” íš¨ê³¼ ì¶”ê°€
+        /// ìŠ¤í…Œì´ì§€ ë²„í”„ì— ì˜í•œ íš¨ê³¼ 
         Debug.LogFormat("[Alive][Damage][RES] {0} - Damage:{1}, RemainHP:{2}", gameObject.name, damage, GetStatusValue(ObjectDataType.AliveObjectStatus.HP));
     }
-    // µ¥¹ÌÁö ÀÌº¥Æ®°¡ ¹ß»ıµÉ´ë ÀÏ¾î³ª´Â ÀÏ.
-    // ÇÇ°İ ¹«Àû, ÇÇ°İ »ö º¯È­, ÇÇ°İ ¾Ö´Ï¸ŞÀÌ¼Ç, ¾ÆÀÌÅÛ È¿°ú µî.
+    // ë°ë¯¸ì§€ ì´ë²¤íŠ¸ê°€ ë°œìƒë ëŒ€ ì¼ì–´ë‚˜ëŠ” ì¼.
+    // í”¼ê²© ë¬´ì , í”¼ê²© ìƒ‰ ë³€í™”, í”¼ê²© ì• ë‹ˆë©”ì´ì…˜, ì•„ì´í…œ íš¨ê³¼ ë“±.
     public virtual void DamageEvnet()
     {
         Debug.LogFormat("[Alive][Damage][Event] Name:{0}, Type:{1}", gameObject.name, type);
@@ -99,7 +101,7 @@ public class AliveObject : MonoBehaviour
     protected virtual void Update()
     {
         {
-            // ÀÌ¹Ì µ¥¹ÌÁö ¹Ş°í ¹«Àû »óÅÂ µ¹ÀÔ»óÅÂ.
+            // ì´ë¯¸ ë°ë¯¸ì§€ ë°›ê³  ë¬´ì  ìƒíƒœ ëŒì…ìƒíƒœ.
             if (allowDamage == false)
             {
                 damageTimer += Time.deltaTime;

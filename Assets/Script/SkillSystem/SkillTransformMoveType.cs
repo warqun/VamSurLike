@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class SkillTransformMoveType : MonoBehaviour
+public class SkillTransformMoveType
 {
     public enum MoveType
     {
@@ -24,8 +24,40 @@ public class SkillTransformMoveType : MonoBehaviour
         CasterDistanceExpansion 
     }
     public ExpansionType expansionType;
-    // ¿Ãµø º”µµ
+    // Ïù¥Îèô ÏÜçÎèÑ
     public float moveSpeed;
-    // »Æ¿Â º”µµ
+    // ÌôïÏû• ÏÜçÎèÑ
     float expansionSpeed;
+
+    public (Vector3 nextMove, float nextRotation, Vector3 nextScale) SkillTransformMoveTypeReturn(Vector3 targetPos)
+    {
+        return (MoveTypeReturn(), RotationTypeReturn(), ExpansionTypeReturn());
+    }
+    Vector3 MoveTypeReturn()
+    {
+        switch (moveType)
+        {
+            case MoveType.Fixed:
+                return (Vector3.zero);
+        }
+        return Vector3.zero;
+    }
+    float RotationTypeReturn()
+    {
+        switch (rotationType)
+        {
+            case RotationType.Fixed:
+                return (0);
+        }
+        return 0;
+    }
+    Vector3 ExpansionTypeReturn()
+    {
+        switch (expansionType)
+        {
+            case ExpansionType.Fixed:
+                return (Vector3.zero);
+        }
+        return Vector3.zero;
+    }
 }

@@ -6,7 +6,7 @@ public class Player : AliveObject
     public Rigidbody rigidbody = null;
     private void Awake()
     {
-        // ³ªÁß¿¡ DB¸¦ ¾²µç ÆÄÀÏ ½Ã½ºÅÛÀ» ¾²µç ¿¢¼¿¾²µç ´Ù¸¥ °÷¿¡¼­ µî·ÏÇÏ°Ô ¼³Á¤.
+        // ë‚˜ì¤‘ì— DBë¥¼ ì“°ë“  íŒŒì¼ ì‹œìŠ¤í…œì„ ì“°ë“  ì—‘ì…€ì“°ë“  ë‹¤ë¥¸ ê³³ì—ì„œ ë“±ë¡í•˜ê²Œ ì„¤ì •.
         SetStatusValue(ObjectDataType.AliveObjectStatus.HP,100);
         SetStatusValue(ObjectDataType.AliveObjectStatus.DP,1);
         SetStatusValue(ObjectDataType.AliveObjectStatus.Speed,3);
@@ -40,14 +40,14 @@ public class Player : AliveObject
             isAlive = false;
         Debug.LogFormat("[Player][Damage][RES] {0} - Damage:{1}, RemainHP:{2}", gameObject.name, damage, hp);
     }
-    /// Æ®¸®°Å¿¡ Ãæµ¹ÇßÀ»¶§
+    /// íŠ¸ë¦¬ê±°ì— ì¶©ëŒí–ˆì„ë•Œ
 
     private void OnTriggerEnter(Collider other)
     {
-        // º£ÀÌ½º¿¡¼­ ¹«±â¿¡ µû¸¥ ¹«ÀûÅ¸ÀÌ¸Ó ¼³Á¤µÊ.
+        // ë² ì´ìŠ¤ì—ì„œ ë¬´ê¸°ì— ë”°ë¥¸ ë¬´ì íƒ€ì´ë¨¸ ì„¤ì •ë¨.
         {
-            /// ¹«±â¿¡ ÀÇÇÑ µ¥¹ÌÁö
-            /// Æ¯Á¤ °æ¿ì¿¡ µµÆ® µ©À¸·Î µé¾î¿Í¾ßÇÏ´Â °æ¿ì.
+            /// ë¬´ê¸°ì— ì˜í•œ ë°ë¯¸ì§€
+            /// íŠ¹ì • ê²½ìš°ì— ë„íŠ¸ ë€ìœ¼ë¡œ ë“¤ì–´ì™€ì•¼í•˜ëŠ” ê²½ìš°.
             WeaponBase triggerWeapon = other.GetComponent<WeaponBase>();
 
             if (triggerWeapon != null)
@@ -56,14 +56,14 @@ public class Player : AliveObject
                 {
                     if (triggerWeapon.master == null)
                         return;
-                    // Á×¾îÀÖ´Â »óÅÂÀÏ¶§ µ¥¹ÌÁö ÆÇÁ¤ Á¾·á.
+                    // ì£½ì–´ìˆëŠ” ìƒíƒœì¼ë•Œ ë°ë¯¸ì§€ íŒì • ì¢…ë£Œ.
                     if (triggerWeapon.master.isAlive == false)
                         return;
-                    // ¹«±â ÁÖÀÎ¿¡ µû¶ó µ¥¹ÌÁö 
+                    // ë¬´ê¸° ì£¼ì¸ì— ë”°ë¼ ë°ë¯¸ì§€ 
                     switch (triggerWeapon.master.type)
                     {
                         case ObjectDataType.AliveObjectType.Mob:
-                            // ¹«±â¿¡ µû¸¥ Â÷º°Á¡ÀÌ »ı±æ´ë Ãß°¡.
+                            // ë¬´ê¸°ì— ë”°ë¥¸ ì°¨ë³„ì ì´ ìƒê¸¸ëŒ€ ì¶”ê°€.
                             ObjectDamage damageReport = new ObjectDamage(triggerWeapon.DamageReqEvnet, DamageResEvnet);
                             damageReport.AddEvnet(DamageEvnet);
                             damageReport.AddEvnet(triggerWeapon.DamageEvnet);
@@ -71,7 +71,7 @@ public class Player : AliveObject
                             break;
                     }
 
-                    // Á¢ÃË Áß¿¡ µ¥¹ÌÁö °è»ê.
+                    // ì ‘ì´‰ ì¤‘ì— ë°ë¯¸ì§€ ê³„ì‚°.
                     float weaponTimer = triggerWeapon.WeaponDamageTypeTick();
                     if (weaponTimer > 0)
                     {
@@ -88,8 +88,8 @@ public class Player : AliveObject
         if (allowDamage == true)
         {
             {
-                // ´ÙÀÌ·ºÆ® µ¥¹ÌÁö »ç¿ë¾ÈÇÔ.
-                // ´ÙÀÌ·ºÆ® µ¥¹ÌÁö.
+                // ë‹¤ì´ë ‰íŠ¸ ë°ë¯¸ì§€ ì‚¬ìš©ì•ˆí•¨.
+                // ë‹¤ì´ë ‰íŠ¸ ë°ë¯¸ì§€.
                 //AliveObject triggerObject = other.GetComponent<AliveObject>();
                 //if (triggerObject != null)
                 //{
@@ -100,36 +100,36 @@ public class Player : AliveObject
                 //            damageReport.AddEvnet(DamageEvnet);
                 //            damageReport.AddEvnet(triggerObject.DamageEvnet);
 
-                //            // ¾ÆÀÌÅÛ ¶Ç´Â Ãß°¡µÇ´Â ¹æ½ÄÀº ¿©±â·Î.
+                //            // ì•„ì´í…œ ë˜ëŠ” ì¶”ê°€ë˜ëŠ” ë°©ì‹ì€ ì—¬ê¸°ë¡œ.
 
                 //            GameBase.gameBase.AddDamageEvent(damageReport);
                 //            break;
                 //    }
                 //}
             }
-            // ¹«Àû È°¼ºÈ­.
+            // ë¬´ì  í™œì„±í™”.
             allowDamage = false;
         }
-        // º£ÀÌ½º¿¡¼­ ¹«±â¿¡ µû¸¥ ¹«ÀûÅ¸ÀÌ¸Ó ¼³Á¤µÊ.
+        // ë² ì´ìŠ¤ì—ì„œ ë¬´ê¸°ì— ë”°ë¥¸ ë¬´ì íƒ€ì´ë¨¸ ì„¤ì •ë¨.
         {
-            /// ¹«±â¿¡ ÀÇÇÑ µ¥¹ÌÁö
-            /// Æ¯Á¤ °æ¿ì¿¡ µµÆ® µ©À¸·Î µé¾î¿Í¾ßÇÏ´Â °æ¿ì.
+            /// ë¬´ê¸°ì— ì˜í•œ ë°ë¯¸ì§€
+            /// íŠ¹ì • ê²½ìš°ì— ë„íŠ¸ ë€ìœ¼ë¡œ ë“¤ì–´ì™€ì•¼í•˜ëŠ” ê²½ìš°.
             WeaponBase triggerWeapon = other.GetComponent<WeaponBase>();
             if (triggerWeapon != null)
             {
                 if (triggerWeapon.master == null)
                     return;
-                // Á×¾îÀÖ´Â »óÅÂÀÏ¶§ µ¥¹ÌÁö ÆÇÁ¤ Á¾·á.
+                // ì£½ì–´ìˆëŠ” ìƒíƒœì¼ë•Œ ë°ë¯¸ì§€ íŒì • ì¢…ë£Œ.
                 if (triggerWeapon.master.isAlive == false)
                     return;
                 float weaponTime = 0;
                 if (weaponCycle.TryGetValue(triggerWeapon, out weaponTime))
                 {
-                    // 0 º¸´Ù ÀÛÀº µ¥¹ÌÁö Å¸ÀÌ¸Ó´Â ÀÛµ¿ÇÏÁö ¾Ê´Â´Ù.
+                    // 0 ë³´ë‹¤ ì‘ì€ ë°ë¯¸ì§€ íƒ€ì´ë¨¸ëŠ” ì‘ë™í•˜ì§€ ì•ŠëŠ”ë‹¤.
                     if (weaponTime > 0)
                     {
                         weaponTime -= Time.fixedDeltaTime;
-                        // Å¸ÀÌ¸Ó ¼Ò¸ğ½Ã ¿ø»óº¹±Í
+                        // íƒ€ì´ë¨¸ ì†Œëª¨ì‹œ ì›ìƒë³µê·€
                         bool useTickDamage = false;
                         if (weaponTime < 0)
                         {
@@ -141,13 +141,13 @@ public class Player : AliveObject
                             weaponCycle[triggerWeapon] = weaponTime;
                             useTickDamage = false;
                         }
-                        // Å¸ÀÌ¸Ó°¡ µÇ¾úÀ»¶§ µ¥¹ÌÁö °è»ê.
+                        // íƒ€ì´ë¨¸ê°€ ë˜ì—ˆì„ë•Œ ë°ë¯¸ì§€ ê³„ì‚°.
                         if (useTickDamage)
                         {
                             switch (triggerWeapon.master.type)
                             {
                                 case ObjectDataType.AliveObjectType.Player:
-                                    // ¹«±â¿¡ µû¸¥ Â÷º°Á¡ÀÌ »ı±æ´ë Ãß°¡.
+                                    // ë¬´ê¸°ì— ë”°ë¥¸ ì°¨ë³„ì ì´ ìƒê¸¸ëŒ€ ì¶”ê°€.
                                     ObjectDamage damageReport = new ObjectDamage(triggerWeapon.DamageReqEvnet, DamageResEvnet);
                                     damageReport.AddEvnet(DamageEvnet);
                                     damageReport.AddEvnet(triggerWeapon.DamageEvnet);

@@ -3,148 +3,145 @@ using System.Data.Common;
 using UnityEngine;
 
 /// <summary>
-/// ÀÔ·Â Á¶°Ç¿¡ ¸Â´Â Vector°ª ¸®ÅÏ. ÀÌ¶§ x-zÁÂÇ¥·Î z°¡ Á¤¸éÀ» ±âÁØÀ¸·Î µÈ´Ù.
+/// ì…ë ¥ ì¡°ê±´ì— ë§ëŠ” Vectorê°’ ë¦¬í„´. ì´ë•Œ x-zì¢Œí‘œë¡œ zê°€ ì •ë©´ì„ ê¸°ì¤€ìœ¼ë¡œ ëœë‹¤.
 /// </summary>
 public class SkillSpawnRotationType
 {
-    // x - z ÁÂÇ¥: z: À§ x ¿Ş
-    // °Å¸®°¡ 1ÀÎ ÁÂÇ¥°è¸¦ ÅëÇØ¼­ ÇöÀç Á¤¸é ±âÁØÀÇ µ¥ÀÌÅÍ¸¦ Ãâ·Â.
-    public enum SpawnRotationType { Front, Rotated, Random, Directional, CameraDirectional , RandomRoation, DuoRandomRoation }
+    // x - z ì¢Œí‘œ: z: ìœ„ x ì™¼
+    // ê±°ë¦¬ê°€ 1ì¸ ì¢Œí‘œê³„ë¥¼ í†µí•´ì„œ í˜„ì¬ ì •ë©´ ê¸°ì¤€ì˜ ë°ì´í„°ë¥¼ ì¶œë ¥.
+    public enum SpawnRotationType { Front, Rotated, Random, Directional, CameraDirectional, RandomRoation, DuoRandomRoation }
     public SpawnRotationType rotationType;
 
-    // ·¥´ı¿¡¼­ ÃÖ´ë È¸Àü°ª.
-    float limitRandomRotationRange; // (-x < a < x)°¢ ¾È¿¡¼­.
-    // ÀÔ·Â °ª.
+    // ë¨ë¤ì—ì„œ ìµœëŒ€ íšŒì „ê°’.
+    float limitRandomRotationRange; // (-x < a < x)ê° ì•ˆì—ì„œ.
+    // ì…ë ¥ ê°’.
     float inputValue;
-    // ½ºÅ³ °³¼ö
-    public int spawnCount;
 
-    // Å¸ÄÏ À§Ä¡¿¡µû¸¥ »ı¼º.
-    Vector3 targetVector = Vector3.zero;
+    // íƒ€ì¼“ ìœ„ì¹˜ì—ë”°ë¥¸ ìƒì„±.
+    Vector3 cameraVector = Vector3.forward;
 
-    // ±âÁØ Á¤¸é 
+    // ê¸°ì¤€ ì •ë©´ 
     Vector3 originalVector = new Vector3(0, 0, 1);
-    // È¸Àü Ãà.
+    // íšŒì „ ì¶•.
     Vector3 rotationAxis = new Vector3(0, 1, 0);
+
 
     public void Set()
     {
         // rotationType
         // limitRandomRotationRange
         // inputValue
-        // spawnCount
         // targetVector
     }
-    public List<Vector3> SkillSpawnRotationTypeReturn()
+    public List<(Vector3,Vector3)> SkillSpawnRotationTypeReturn(int spawnCount)
     {
-        List<Vector3> result = new List<Vector3>();
+        List<(Vector3, Vector3)> result = new List<(Vector3, Vector3)>();
         switch (rotationType)
         {
             case SpawnRotationType.Front:
+            default:
                 {
-                    result.Add(new Vector3(0, 0, 1));
+                    ( Vector3, Vector3) keyValuePair = (new Vector3(0, 0, 1), new Vector3(0, 0, 1));
+                    result.Add(keyValuePair);
                     return result;
                 }
+            // ë‹¤ìˆ˜ì˜ ê²½ìš° ë²”ìœ„ê°ë„ê°€ inputValueë§Œí¼ ì§„í–‰.
             case SpawnRotationType.Rotated:
                 {
                     if (spawnCount == 0)
                         return result;
 
-                    // ³ª´©¾î ¾È¶³¾îÁö´À °ª¿¡ ´ëÇØ¼­
+                    // ë‚˜ëˆ„ì–´ ì•ˆë–¨ì–´ì§€ëŠ ê°’ì— ëŒ€í•´ì„œ
                     int remainValue = (int)(2 * inputValue) % spawnCount;
 
-                    // ´ÜÀ§ È¸Àü °ª.
-                    float eachRotationRange = (2*inputValue- remainValue) / spawnCount;
+                    // ë‹¨ìœ„ íšŒì „ ê°’.
+                    float eachRotationRange = (2 * inputValue - remainValue) / spawnCount;
 
-                    // È¸Àü Àû¿ë
-                    float sumRotation = (inputValue) - remainValue/2;
+                    // íšŒì „ ì ìš©
+                    float sumRotation = (inputValue) - remainValue / 2;
                     // -inputValue < x < inputValue;
                     for (int i = 0; i < spawnCount; i++)
                     {
                         Vector3 rotatedVector = Quaternion.AngleAxis(sumRotation, rotationAxis) * originalVector;
-                        result.Add(rotatedVector);
+                        (Vector3, Vector3) keyValuePair = (rotatedVector, rotatedVector);
+                        result.Add(keyValuePair);
                         sumRotation -= eachRotationRange;
                     }
                     return result;
                 }
+                // ë¬´ì¡°ê±´ ì •ë©´ì€ í•˜ë‚˜
             case SpawnRotationType.Directional:
                 {
-                    if(inputValue == 0)
+                    if (inputValue == 0)
                         return result;
 
-                    // ³ª´©¾î ¾È¶³¾îÁö´À °ª¿¡ ´ëÇØ¼­
-                    int remainValue = 360 % (int)inputValue;
-
-                    float eachRotationRange = (360-remainValue) / inputValue;
-                    float sumRotation = remainValue;
-                    for (int i=0;i< inputValue; i++)
+                    float eachRotationRange = (360) / inputValue;
+                    float sumRotation = 0;
+                    for (int i = 0; i < inputValue; i++)
                     {
-                        // ´ÜÀ§ È¸Àü °ª.
                         Vector3 rotatedVector = Quaternion.AngleAxis(sumRotation, rotationAxis) * originalVector;
-                        result.Add(rotatedVector);
+                        (Vector3, Vector3) keyValuePair = (rotatedVector, rotatedVector);
+                        result.Add(keyValuePair);
                         sumRotation += eachRotationRange;
                     }
                     return result;
                 }
+                // ì •ë©´ì€ í•˜ë‚˜
             case SpawnRotationType.CameraDirectional:
                 {
                     if (inputValue == 0)
                         return result;
-                    // ³ª´©¾î ¾È¶³¾îÁö´À °ª¿¡ ´ëÇØ¼­
-                    int remainValue = 360 % (int)inputValue;
 
-                    float eachRotationRange = (360-remainValue) / inputValue;
-                    float sumRotation = remainValue;
+                    float eachRotationRange = (360 ) / inputValue;
+                    float sumRotation = 0;
                     for (int i = 0; i < inputValue; i++)
                     {
-                        // targetVector: Ä«¸Ş¶ó ¹æÇâ.
-                        // ´ÜÀ§ È¸Àü °ª.
-                        Vector3 rotatedVector = Quaternion.AngleAxis(sumRotation, rotationAxis) * targetVector;
-                        result.Add(rotatedVector);
+                        Vector3 rotatedVector = Quaternion.AngleAxis(sumRotation, rotationAxis) * cameraVector;
+                        (Vector3, Vector3) keyValuePair = (rotatedVector, rotatedVector);
+                        result.Add(keyValuePair);
                         sumRotation += eachRotationRange;
                     }
                     return result;
                 }
+                // í•œê³„ ìˆ˜ì¹˜ ì—†ìŒ. 360
             case SpawnRotationType.RandomRoation:
                 {
                     if (spawnCount == 0)
                         return result;
-                    // ÇØ´ç ·£´ı¿¡¼­ °ãÄ¡´Â ½ºÅ³ÀÌ »ı±â¸é ¾ÈµÇ¹Ç·Î ¾î´ÀÁ¤µµ °£°İÀ» ¸¸µé°í ÁøÇàÇÑ´Ù.
-                    float eachRotationRange = limitRandomRotationRange * 2 / spawnCount;
-                    float parameter0 = limitRandomRotationRange;
-                    float parameter1 = limitRandomRotationRange - eachRotationRange;
+                    float eachRotationRange = 360 / spawnCount;
                     for (int i = 0; i < spawnCount; i++)
                     {
-                        float randomRotation = Random.Range(parameter0, parameter1);
-                        parameter0 -= eachRotationRange;
-                        parameter1 -= eachRotationRange;
+                        float randomRotation = Random.Range(-180, 180);
 
                         Vector3 rotatedVector = Quaternion.AngleAxis(randomRotation, rotationAxis) * originalVector;
+                        (Vector3, Vector3) keyValuePair = (rotatedVector, rotatedVector);
+                        result.Add(keyValuePair);
                     }
                     return result;
                 }
+
+                // ë¨ë¤ ë²”ìœ„ 360
+                // vec a, vec b (a,b) a: ì „ì§„í•  ë²¡í„°, b: ë°©í–¥ ë²¡í„°.
             case SpawnRotationType.DuoRandomRoation:
                 {
                     if (inputValue == 0)
                         return result;
 
-                    Vector3 beforeVector = originalVector;
                     for (int i = 0; i < inputValue; i++)
                     {
-                        float randomRotation = Random.Range(-limitRandomRotationRange, limitRandomRotationRange);
-                        // targetVector: Ä«¸Ş¶ó ¹æÇâ.
-                        // ´ÜÀ§ È¸Àü °ª.
-                        Vector3 rotatedVector = Quaternion.AngleAxis(randomRotation, rotationAxis) * beforeVector;
-                        beforeVector = rotatedVector;
-                        result.Add(rotatedVector);
+                        // ë°©í–¥
+                        float randomRotation = Random.Range(-360, 360);
+                        Vector3 rotatedVector = Quaternion.AngleAxis(randomRotation, rotationAxis) * originalVector;
+
+                        // ë°”ë¡œë³´ê³  ìˆëŠ” ë°©í–¥
+                        float randomRotation2 = Random.Range(-360, 360);
+                        Vector3 rotatedVector2 = Quaternion.AngleAxis(randomRotation, rotationAxis) * rotatedVector;
+
+                        (Vector3, Vector3) keyValuePair = (rotatedVector, rotatedVector2);
+                        result.Add(keyValuePair);
                     }
                     return result;
                 }
-            default:
-                result.Add(new Vector3(0, 0, 1));
-                return result;
         }
     }
-
-
 }

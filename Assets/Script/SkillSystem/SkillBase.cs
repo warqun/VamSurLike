@@ -10,20 +10,8 @@ public class SkillBase : MonoBehaviour
     // 스킬 사용자
     public AliveObject master;
     public GameObject mainSkill;
-    public List<GameObject> subSkillList=new List<GameObject>();
 
-    public void Set(AliveObject master, GameObject mainSkill, List<GameObject> subSkillList)
-    {
+    public Vector3 forward;
 
-    }
-
-    public virtual void NextSkillEvent()
-    {
-
-    }
-    protected virtual void EndSkillEvent()
-    {
-
-    }
 
 }

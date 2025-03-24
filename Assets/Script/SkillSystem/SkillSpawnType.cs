@@ -6,11 +6,11 @@ public class SkillSpawnType
     public enum SpawnType { Single, Multi }
     public SpawnType spawnType;
     
-    public int spawnCount;
+    int spawnCount;
 
     public void Set()
     {
-        // spwanPoint ¼³Á¤.
+        // spawnCount ?ã…¼ì ™.
     }
     public int SpawnCout()
     {

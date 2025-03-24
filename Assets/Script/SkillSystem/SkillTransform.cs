@@ -1,47 +1,76 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
-/// ½ºÅ³ Å¸ÄÏ - SkillTransformTrackingType
-///     ½Ç½Ã°£ Å¸ÄÏ º¯°æ
-///     ½Ç½Ã°£ Å¸ÄÏ °íÁ¤
-///     ´ë»ó Å¸ÄÏ »ı¼º
-///     Á¶°ÇºÎ ¹æÀ§ Å¸ÄÏ »ı¼º(Æ¯Á¤ ±¸¿ª °¨ÁöÇÏ´Â °ÍÀ¸·Î °¨Áö)
+/// ìŠ¤í‚¬ íƒ€ì¼“ - SkillTransformTrackingType
+///     ì‹¤ì‹œê°„ íƒ€ì¼“ ë³€ê²½
+///     ì‹¤ì‹œê°„ íƒ€ì¼“ ê³ ì •
+///     ëŒ€ìƒ íƒ€ì¼“ ìƒì„±
+///     ì¡°ê±´ë¶€ ë°©ìœ„ íƒ€ì¼“ ìƒì„±(íŠ¹ì • êµ¬ì—­ ê°ì§€í•˜ëŠ” ê²ƒìœ¼ë¡œ ê°ì§€)
 ///     
-/// ½ºÅ³ ÀÌµ¿ - SkillTransformMoveType
-///     È¸Àü
-///     ÀÌµ¿
-///     È®Àå
+/// ìŠ¤í‚¬ ì´ë™ - SkillTransformMoveType
+///     íšŒì „
+///     ì´ë™
+///     í™•ì¥
 ///     
-/// ½ºÅ³ Ãæµ¹ ¹× Á¾·á - SkillTransformEndType
-///     Áö¼Ó ½Ã°£ Á¾·á
-///     Ãæµ¹ Ä«¿îÆ® 
-///     Å¸ÄÏ Ãæµ¹
+/// ìŠ¤í‚¬ ì¶©ëŒ ë° ì¢…ë£Œ - SkillTransformEndType
+///     ì§€ì† ì‹œê°„ ì¢…ë£Œ
+///     ì¶©ëŒ ì¹´ìš´íŠ¸ 
+///     íƒ€ì¼“ ì¶©ëŒ
 /// <summary>
-/// ÀÌµ¿ ¹× Ãæµ¹, Á¾·á ½ÃÁ¡À» °áÁ¤ÇÏ´Â Å¬·¡½º
-/// »ı¼ºµÈ ½ºÅ³ÀÌ ¹°¸®Àû Çö»ó¿¡ ´ëÇÑ ¸í¼¼
+/// ì´ë™ ë° ì¶©ëŒ, ì¢…ë£Œ ì‹œì ì„ ê²°ì •í•˜ëŠ” í´ë˜ìŠ¤
+/// ìƒì„±ëœ ìŠ¤í‚¬ì´ ë¬¼ë¦¬ì  í˜„ìƒì— ëŒ€í•œ ëª…ì„¸
 /// </summary>
 public class SkillTransform : MonoBehaviour
 {
-    // ½ºÅ³ °íÀ¯ ¹øÈ£
+    // ìŠ¤í‚¬ ê³ ìœ  ë²ˆí˜¸
     long skillId;
-    // ÃßÀû Å¸ÀÔ
+    // ì¶”ì  ëŒ€ìƒ ì¶œë ¥
+    SkillTransformTrackingTargetType skillTransformTrackingTargetType;
+    // ì¶”ì  íƒ€ì…
     // bool targetTracking;
     SkillTransformTrackingType skillTransformTrackingType;
-    // ÀÌµ¿ Å¸ÀÔ
+    // ì´ë™ íƒ€ì…
     // float moveSpeed;
     // float expansionSpeed;
     SkillTransformMoveType skillTransformMoveType;
-    // Á¾·á Å¸ÀÔ
+    // ì¢…ë£Œ íƒ€ì…
     SkillTransformEndType skillTransformEndType;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public List<(AliveObject target, Vector3 targetPos, Vector3 nextMove, float nextRotation, Vector3 nextScale)> ExcuteTransform(List<SkillBase> skillList)
     {
+        //(ì¶”ì  ëŒ€ìƒ ìœ„ì¹˜, ì´ë™ ìœ„ì¹˜.)
+        List<(AliveObject target, Vector3 targetPos, Vector3 nextMove, float nextRotation, Vector3 nextScale)> moveReq 
+            = new List<(AliveObject target, Vector3 targetPos, Vector3 nextMove, float nextRotation, Vector3 nextScale)>();
+        Vector3 masterPosition = transform.position;
+        //skillList.forward;
+
+        for(int i = 0; i < skillList.Count; i++)
+        {
+            // ì¶”ì  ëŒ€ìƒì— ëŒ€í•´ì„œ ë¦¬í„´.
+            AliveObject targetObject = skillTransformTrackingTargetType.SKillTransformTrackingTargetTypeReturn(skillList[i]);
+            // í”„ë ˆì„ ì¶”ì .
+            Vector3 targetPosition = skillTransformTrackingType.SkillTransformTrackingTypeReturn(targetObject);
+
+            // í”„ë ˆì„ ë³„ ì´ë™í•  ìœ„ì¹˜. 
+            (Vector3 nextMove, float nextRotation, Vector3 nextScale) nextTrans = skillTransformMoveType.SkillTransformMoveTypeReturn(targetPosition);
+            (AliveObject target, Vector3 targetPos, Vector3 nextMove, float nextRotation, Vector3 nextScale) element 
+                = (targetObject, targetPosition, nextTrans.nextMove, nextTrans.nextRotation, nextTrans.nextScale);
+            moveReq.Add(element);
+        }
+
         
+        return moveReq;
+
     }
 
-    // Update is called once per frame
-    void Update()
+    /// <summary>
+    /// True: ì¢…ë£Œ, false: ì¢…ë£Œì´ì „.
+    /// </summary>
+    /// <returns></returns>
+    public bool IsSkillTransformEnd()
     {
-        
+        return false;
     }
 }
+
